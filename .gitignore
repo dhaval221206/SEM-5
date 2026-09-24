@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+front end/node_modules/
+
+# Python cache & build
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Build artifacts
+dist/
+front end/dist/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# OS / Editor junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

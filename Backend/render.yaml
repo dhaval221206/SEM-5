@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: movie-recommender-backend
+    env: python
+    region: singapore
+    buildCommand: pip install -r requirements.txt && python preprocess.py
+    startCommand: gunicorn app:app --timeout 120 --workers 2
+    envVars:
+      - key: PORT
+        value: 10000
