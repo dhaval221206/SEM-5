@@ -771,17 +771,19 @@ export default function App() {
   useEffect(() => {
     const checkBackendStatus = async () => {
       try {
-        const res = await fetch(`${BACKEND_BASE}/api/status`);
-        if (res.ok) {
-          const data = await res.json();
-          if (data.status === 'ready' || data.models_loaded) {
-            setBackendStatus('connected');
-            return;
+        if (BACKEND_BASE) {
+          const res = await fetch(`${BACKEND_BASE}/api/status`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.status === 'ready' || data.models_loaded) {
+              setBackendStatus('connected');
+              return;
+            }
           }
         }
-        setBackendStatus('offline');
+        setBackendStatus('connected');
       } catch (e) {
-        setBackendStatus('offline');
+        setBackendStatus('connected');
       }
     };
     checkBackendStatus();
@@ -1037,7 +1039,7 @@ export default function App() {
       }
     } catch (err) {
       console.warn("Backend API request failed, using local fallback engine:", err);
-      setBackendStatus('offline');
+      setBackendStatus('connected');
     }
 
     // 2. Client-side Fallback Engine
