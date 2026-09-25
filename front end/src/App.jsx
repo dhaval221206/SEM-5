@@ -751,7 +751,18 @@ export default function App() {
   const [selectedMoviePoster, setSelectedMoviePoster] = useState('');
   const [backendStatus, setBackendStatus] = useState('checking'); // 'connected' | 'offline' | 'checking'
 
-  const BACKEND_BASE = import.meta.env.VITE_BACKEND_URL || '';
+  const BACKEND_BASE = useMemo(() => {
+    const rawUrl = import.meta.env.VITE_BACKEND_URL;
+    if (rawUrl && !rawUrl.includes('127.0.0.1') && !rawUrl.includes('localhost')) {
+      return rawUrl.replace(/\/+$/, '');
+    }
+    const isLocalhost = typeof window !== 'undefined' && 
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    if (isLocalhost) {
+      return (rawUrl || 'http://127.0.0.1:5000').replace(/\/+$/, '');
+    }
+    return '';
+  }, []);
 
   const searchRef = useRef(null);
   const userMenuRef = useRef(null);
@@ -774,7 +785,7 @@ export default function App() {
       }
     };
     checkBackendStatus();
-  }, []);
+  }, [BACKEND_BASE]);
 
   // Toast Helper
   const showToast = (message, type = 'success') => {
